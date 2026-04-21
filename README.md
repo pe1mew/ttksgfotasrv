@@ -1,25 +1,36 @@
-# The THings Kickstarter Gateway FOTA server
+# The Things Kickstarter Gateway FOTA Server
 
-summary
+A PHP-based Firmware Over-The-Air (FOTA) server for The Things Network Kickstarter Gateway, enabling custom firmware updates outside the default TTI infrastructure. This repository provides both a production-ready web server with an informational interface and a minimal development server for testing.
 
 ## Features
 
-bullet list
-
+- **Production FOTA Server** - Full-featured web interface with gateway configuration instructions
+- **Development Server** - Minimal PHP server for local firmware testing
+- **Automatic URL Detection** - Server displays its own URL for easy gateway configuration
+- **Standards Compliant** - Serves Intel HEX firmware files and SHA256 checksums as expected by gateway hardware
+- **Informational Pages** - Comprehensive setup documentation accessible via browser
+- **Zero Configuration** - Works out-of-the-box on any PHP-capable web server
 
 ## Repository Structure
 
 ```
-greenhouse-controller/
+ttksgfotasrv/
 │
-├── firmware/                   ← PlatformIO project (edit in VSCode)
-│   ├── platformio.ini          ← Board, framework, library dependencies
-│   ├── src/                    ← Application source code
-│   └── test/                   ← Unit tests (PlatformIO test runner)
+├── fotasrv/                    ← Production FOTA server
+│   ├── index.php               ← Main server with web interface
+│   ├── firmware.hex            ← Gateway firmware binary (not part of repository)
+│   ├── checksums               ← SHA256 verification file (not part of repository)
+│   └── readme.md               ← Deployment documentation
 │
-data
+├── simplefota/                 ← Development/testing server
+│   ├── fota.php                ← Minimal FOTA server script
+│   ├── start-fota-server.sh    ← Quick start script
+│   ├── firmware.hex            ← Gateway firmware binary (not part of repository)
+│   ├── checksums               ← SHA256 verification file (not part of repository)
+
 │
-├── README.md
+├── TTKSGFOTASpecification.md   ← FOTA protocol specification
+├── README.md                   ← This file
 ├── LICENSE
 ├── license.md
 ├── changelog.md
@@ -29,7 +40,32 @@ data
 
 ## Getting Started
 
-### Prerequisites
+### For Production Deployment
+
+Deploy the full FOTA server with web interface on your PHP-capable web server:
+
+1. See **[fotasrv/readme.md](fotasrv/readme.md)** for complete deployment instructions
+2. Upload files to your HTTPS-enabled web server
+3. Configure your gateway to use your custom FOTA URL
+
+### For Development & Testing
+
+Run a local FOTA server for firmware testing:
+
+1. See **[simplefota/readme.md](simplefota/readme.md)** for setup instructions
+2. Start the PHP built-in server with your firmware files
+3. Point your development gateway to your local server
+
+### FOTA Protocol Specification
+
+For technical details about the FOTA protocol implementation, see **[TTKSGFOTASpecification.md](TTKSGFOTASpecification.md)**.
+
+## Prerequisites
+
+- **PHP 7.4+** (PHP 8.0+ recommended)
+- **Web server** with PHP support (Apache, nginx, or PHP built-in server)
+- **HTTPS certificate** (production deployments only)
+- **Gateway firmware files** from the [gateway repository](https://github.com/pe1mew/gateway/tree/upd-only)
 
 
 ## License
