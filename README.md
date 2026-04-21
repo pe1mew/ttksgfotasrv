@@ -27,7 +27,7 @@ ttksgfotasrv/
 │   ├── start-fota-server.sh    ← Quick start script
 │   ├── firmware.hex            ← Gateway firmware binary (not part of repository)
 │   ├── checksums               ← SHA256 verification file (not part of repository)
-
+│   └── readme.md               ← Documentation
 │
 ├── TTKSGFOTASpecification.md   ← FOTA protocol specification
 ├── README.md                   ← This file
