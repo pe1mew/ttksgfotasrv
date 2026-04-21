@@ -58,7 +58,7 @@ Run a local FOTA server for firmware testing:
 
 ### FOTA Protocol Specification
 
-For technical details about the FOTA protocol implementation, see **[TTKSGFOTASpecification.md](TTKSGFOTASpecification.md)**.
+For technical details about the FOTA protocol implementation, see **[TTKSGFOTASpecification.md](TTKSGFOTASpecification.md)**. This specification was reverse-engineered through code inspection of the gateway firmware to document the expected FOTA server behavior and protocol requirements.
 
 ## Prerequisites
 
