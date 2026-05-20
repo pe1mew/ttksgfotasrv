@@ -81,11 +81,16 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
       <h2>Upgrade your Kickstarter gateway</h2>
       <p>To prepare a micro SD card for The Things Kickstarter Gateway firmware update, follow these steps:</p>
       <ol>
+        <li>Prepare a FAT32-formatted SD card with a folder called <strong>update</strong></li>
         <li>Download the <a href="checksums">checksums</a> file from this site</li>
         <li>Download the <a href="firmware.hex">firmware.hex</a> file from this site</li>
-        <li>Copy both files to the root directory of a FAT32 formatted micro SD card</li>
+        <li>Copy both files to the <strong>update</strong> folder on the SD card</li>
         <li>Insert the SD card into your gateway and power it on to begin the firmware update</li>
       </ol>
+      <pre><code>SDCARD
+└── update
+    ├── checksums
+    └── firmware.hex</code></pre>
       
       <h2>Configure Custom FOTA Server</h2>
       <p>After updating your gateway firmware, you need to configure it to use this custom FOTA server instead of the default TTI server:</p>
