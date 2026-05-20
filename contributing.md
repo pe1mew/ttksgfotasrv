@@ -6,7 +6,7 @@ Thank you for considering contributing to this project! Please follow the guidel
 1. **Fork the Repository**: Click the "Fork" button on the repository’s page.
 2. **Clone Your Fork**: Run the following command:
    ```sh
-   git clone https://github.com/pe1mew/NTRIP-FreeRTOS-Client-for-ESP32.git
+   git clone https://github.com/pe1mew/ttksgfotasrv.git
    ```
 3. **Create a Branch**: Use a descriptive branch name for your changes:
    ```sh
