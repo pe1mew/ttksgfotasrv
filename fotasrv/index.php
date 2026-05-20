@@ -116,6 +116,8 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
       
       <h2>Disclaimer</h2>
       <p><em>This project is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</em></p>
+      <hr style="margin-top:2em;border:none;border-top:1px solid #eee">
+      <p style="text-align:center;font-size:0.8em;color:#999">FOTA Server v1.0.0</p>
     </div>
   </body>
 </html>
