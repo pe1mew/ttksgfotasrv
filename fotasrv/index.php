@@ -88,9 +88,9 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
         <li>Insert the SD card into your gateway and power it on to begin the firmware update</li>
       </ol>
       <pre><code>SDCARD
-└── update
-    ├── checksums
-    └── firmware.hex</code></pre>
+ └── update
+     ├── checksums
+     └── firmware.hex</code></pre>
       
       <h2>Configure Custom FOTA Server</h2>
       <p>After updating your gateway firmware, you need to configure it to use this custom FOTA server instead of the default TTI server:</p>
