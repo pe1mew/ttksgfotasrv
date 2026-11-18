@@ -44,9 +44,8 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
 
     html { height:100%; }
     body{height:100%;font-family:arial;background:#f2f2f2;color:#555}.container{width:650px;margin:5em auto;padding:3em;background:#fff;border:2px solid #eee;border-radius:5px}input{outline:0;padding:.5em;font:inherit;transition:border-color .2s;box-sizing:border-box}input:focus{border-color:#1a74b8}.container,input{border-radius:5px;border:2px solid #eee}label{display:block;margin-bottom:2em}label:last-child{margin-bottom:0}label input:not([type=checkbox]){width:100%}input[type=checkbox]{width:auto;vertical-align:middle}.label{font-weight:700;margin:0 0 .3em .3em}.inl{display:inline;margin-left:.5em}#adv{display:none;margin-top:1em}#a:checked~#adv{display:block}#a,#a+label{font-size:.8em;color:#999}h1{text-align:center;color:#1a74b8;margin:0 0 1.2em 0}h2{color:#1a74b8;margin:1.5em 0 0.8em 0;font-size:1.3em}h3{color:#555;margin:1em 0 0.5em 0;font-size:1.1em}ul{margin:0.5em 0 1em 1.5em}ul li{margin:0.3em 0}code{background:#f5f5f5;padding:2px 6px;border-radius:3px;font-family:monospace;color:#d14;font-size:0.9em}.save{background:#66d1bb;padding:1em 2em;color:#fff;border:none;font:inherit;border-radius:300px;cursor:pointer}.buttons{text-align:right;margin-top:1em}</style>
-    <script src="./mchp.js" type="text/javascript"></script>
   </head>
-  <body onload="bootWebsite()">
+  <body>
     <div class="container">
       <input type="hidden" name="wlan" id="wlan" value="infra">
       <center>
