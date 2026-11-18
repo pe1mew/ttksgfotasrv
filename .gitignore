@@ -1,2 +1,3 @@
-checksums
-firmware.hex
+# Development server copies are local only; the production files live in fotasrv/
+simplefota/checksums
+simplefota/firmware.hex

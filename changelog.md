@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.2] — 2026-11-18
+
+### Added
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.30 is now tracked in the repository so the production server can be deployed directly from it (SHA256 `9a3ed773ad6e33f52e22b56a0b56be6ecd820a4a4ac11df159d099d0239245ce`)
+
+### Changed
+- `.gitignore` — only the `simplefota/` development copies of `firmware.hex` and `checksums` are ignored
+
+### Firmware 1.2.30
+- UDP forwarder: `freq` is formatted with integer arithmetic so ChirpStack accepts uplinks (gateway issue #1); stale queued uplinks are discarded while the forwarder is disabled
+
+---
+
 ## [1.0.1] — 2026-11-18
 
 ### Added
