@@ -98,6 +98,7 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
         <li>Connect to your gateway's configuration interface</li>
         <li>Navigate to the gateway settings page</li>
         <li>Click on <strong>"Show advanced options"</strong></li>
+        <li>Set Account Server to: <code>"https://eu1.cloud.thethings.network/"</code></li>
         <li>Check the box for <strong>"Override FOTA URL"</strong></li>
         <li>Enter the custom FOTA server URL: <code><?php echo htmlspecialchars($currentUrl); ?></code></li>
         <li>Save the settings</li>
