@@ -2,6 +2,40 @@
 
 A PHP-based Firmware Over-The-Air (FOTA) server for The Things Network Kickstarter Gateway, enabling custom firmware updates outside the default TTI infrastructure. This repository provides both a production-ready web server with an informational interface and a minimal development server for testing.
 
+## Active FOTA Server
+
+A public instance of this FOTA server is running at **<https://rfsee.net/fotasrv/>**. Gateway owners can use it directly; no own deployment is needed.
+
+The instance serves the modified gateway firmware from the [gateway repository (`upd-only` branch)](https://github.com/pe1mew/gateway/tree/upd-only):
+
+| Endpoint | Content |
+|---|---|
+| [`https://rfsee.net/fotasrv/`](https://rfsee.net/fotasrv/) | Information page with upgrade and configuration instructions |
+| [`https://rfsee.net/fotasrv/firmware.hex`](https://rfsee.net/fotasrv/firmware.hex) | Gateway firmware (Intel HEX) |
+| [`https://rfsee.net/fotasrv/checksums`](https://rfsee.net/fotasrv/checksums) | SHA256 checksums of the firmware |
+
+### Using the active server
+
+1. **Flash the modified firmware once via SD card.** The stock firmware only uses the FOTA URL it gets from the TTI account server, so the override option is only available after this update:
+   - Format a micro SD card as FAT32 and create a folder named `update`
+   - Download `firmware.hex` and `checksums` from the server and copy both into `update/`
+   - Insert the card into the gateway and power it on to start the update
+
+   ```
+   SDCARD
+    └── update
+        ├── checksums
+        └── firmware.hex
+   ```
+
+2. **Point the gateway to the server.** In the gateway's configuration interface:
+   - Open the settings page and click **"Show advanced options"**
+   - Set the Account Server to `https://eu1.cloud.thethings.network/`
+   - Check **"Override FOTA URL"** and enter `https://rfsee.net/fotasrv/`
+   - Save the settings
+
+From then on, the gateway checks `https://rfsee.net/fotasrv/` for firmware updates instead of the default TTI FOTA server.
+
 ## Features
 
 - **Production FOTA Server** - Full-featured web interface with gateway configuration instructions

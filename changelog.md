@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.1] — 2026-11-18
+
+### Added
+- `README.md` — "Active FOTA Server" section documenting the public instance at <https://rfsee.net/fotasrv/>, its endpoints, and how to point a gateway at it
+
+### Changed
+- `fotasrv/index.php` — configuration instructions now tell users to set the Account Server to `https://eu1.cloud.thethings.network/`
+
+### Fixed
+- `fotasrv/index.php` — alignment of the SD card directory tree on the information page
+- `fotasrv/index.php` — removed the dead `mchp.js` script reference and `bootWebsite()` onload handler, which caused a 404 and a JavaScript error on every page load
+
+---
+
 ## [1.0.0] — 2026-05-20
 
 ### Added
