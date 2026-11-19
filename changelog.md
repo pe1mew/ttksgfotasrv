@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.3] — 2026-11-19
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.32 replaces 1.2.30 (SHA256 `3f2b53181b771452ce84608e672d48d2c9f5647403a41557d5f7d5bae6a8b5c1`)
+
+### Firmware 1.2.32
+- Fixes the reboot on web UI access after long uptime and the boot loop with an HTTPS FOTA URL (gateway issue #2): FreeRTOS `heap_4` replaces the non-coalescing `heap_2`, and an MQTT publish timeout reconnects MQTT only instead of re-initialising the whole network stack and TLS session
+- `MON:` console line reports largest free block, free block count and minimum free heap
+
+---
+
 ## [1.0.2] — 2026-11-18
 
 ### Added
