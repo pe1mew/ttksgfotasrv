@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.4] — 2026-11-20
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.35 replaces 1.2.32 (SHA256 `8263bfe483808982552fa56111aff56761b6f831c8fa0e73d708ed3910264bf5`)
+
+### Firmware 1.2.35
+- Fixes the watchdog reset during LoRa module configuration (gateway issue #3): separate read and write driver handles for the LoRa UART
+- Fixes the watchdog reset during TLS connect (gateway issue #5): non-blocking TLS handshake, 10 s timeout and retry in the HTTP and MQTT clients
+- Reserves a 4 KB startup stack (heap 350000 → 346000 bytes); prints `*** WDT pending` diagnostics before a watchdog reset
+- Versions 1.2.33 and 1.2.34 were test builds and were not released
+
+---
+
 ## [1.0.3] — 2026-11-19
 
 ### Changed
