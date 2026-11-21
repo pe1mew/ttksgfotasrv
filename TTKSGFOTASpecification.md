@@ -14,6 +14,8 @@ The gateway checks for firmware updates on every boot and periodically during op
 The FOTA base URL (`firmware_url`) is provisioned by the TTN account server during the configuration download step (`GET /api/v2/gateways/{id}?filter=ttn`, JSON field `"firmware_url"`). It is stored in non-volatile flash (activation data sector). It can be overridden via the web UI FOTA override feature (Phase 7 of the UDP forwarder plan).
 > At 20-4-2026 the FOTA URL served was: https://ttkg-fw.thethingsindustries.com/v1/beta or https://ttkg-fw.thethingsindustries.com/v1/stable/ 
 
+How the server derives this URL from the gateway's update channel, and how the channels relate to the branches of the firmware repository, is described in §15.
+
 ---
 
 ## 2. FOTA URL structure
@@ -394,3 +396,71 @@ RewriteRule ^ fota.php [L]
 | Transfer encoding | Plain (no chunked) | client reads raw socket bytes |
 | Authentication | None | no Authorization header sent |
 | FOTA check interval | 24 hours (via reboot) | `FIRMWARE_CHECK_TIMEOUT`, `app.c:19` |
+
+---
+
+## 15. Update channels and the TTN side
+
+This section describes where `firmware_url` comes from and how the original design ties update channels to branches of the firmware repository. Sources: The Things Stack source code (`pkg/gatewayconfigurationserver/ttkg/http_gateway.go`), the `Build` workflow in the firmware repository (`.github/workflows/build.yml`) and requests to the firmware server on 2026-11-21. The response of the TTN server to an actual gateway was not captured for this section; the note in §1 records the URLs seen on 20-4-2026.
+
+### 15.1 Overview
+
+```
+ TTN console                The Things Stack                 firmware server
+ gateway settings           (gateway configuration server)   ttkg-fw.thethingsindustries.com
+ ----------------           ------------------------------   -------------------------------
+ update channel   ───────►  firmware_url =                   /v1/stable/   checksums, firmware.hex
+ automatic updates          base + "/" + update channel      /v1/beta/     ...
+                            auto_update = true | false       /v1/develop/  ...
+                                     │                       /v1/master/   ...
+                                     ▼                              ▲
+                            gateway: GET /api/v2/gateways/{id}      │ upload on every push
+                            stores firmware_url, auto_update        │
+                                     │                       firmware repository, CI build
+                                     └── GET {firmware_url}/checksums, /firmware.hex
+```
+
+### 15.2 How the server builds `firmware_url`
+
+The gateway identifies itself with the HTTP header `User-Agent: TTNGateway`. Only for that user agent the server adds `firmware_url` to the configuration response. The value is derived from the gateway's **update channel** setting (function `ttkgFirmwareURL`):
+
+| Update channel of the gateway | `firmware_url` in the response |
+|---|---|
+| empty | server default channel; if that is empty too: `stable` |
+| a name, for example `beta` | `{base}/beta` |
+| a value that starts with `http` | that value, unchanged |
+
+`{base}` is a setting of the server deployment; the default in the source is `https://ttkg-fw.thethingsindustries.com/v1`. A deployment can configure a different base and a different default channel.
+
+The third row means that a complete URL entered as update channel is handed to the gateway as is. This would point a gateway at any FOTA server from the TTN side, without the web UI override. It has not been tested on a gateway.
+
+The response also contains `auto_update` (`true`/`false`), the automatic-updates field of the gateway record. See §15.5.
+
+### 15.3 Channels are branches
+
+In the original design a channel is a folder on the firmware server with the name of a branch of the firmware repository. The `Build` workflow runs on every push to `develop`, `master`, `beta` or `stable` and on every tag `v<major>.<minor>.<patch>`; it builds the firmware and uploads four files to `v1/<branch or tag name>/`:
+
+| File | Use |
+|---|---|
+| `firmware.hex` | image the gateway downloads (§5) |
+| `checksums` | SHA-256 the gateway compares (§4) |
+| `firmware-with-bootloader.hex` | image for a programmer |
+| `disassembly.txt` | for debugging |
+
+Consequences of this design:
+
+- **Releasing is a branch move.** A firmware version reaches the `stable` channel when the branch `stable` is moved to that commit; the image is built by CI from that commit. No built image is committed in the repository.
+- **Channel order.** `develop` is the integration branch and the most advanced; `beta` and `stable` (and `master`) follow.
+- **State of the server on 2026-11-21:** `https://ttkg-fw.thethingsindustries.com/v1/{stable,beta,develop,master}/checksums` all answer with a different checksum; other names return HTTP 403.
+
+### 15.4 This repository and the community override
+
+- The repository pe1mew/gateway keeps the original design: the branches `master`, `stable`, `beta` and `develop` and the `Build` workflow file are preserved, so that a pull request with TheThingsProducts/gateway falls in place with the existing infrastructure. The workflow is switched off in the fork (it needs the upstream storage credentials); the fork's builds are made locally and published as GitHub release assets and through the FOTA server repository. From 1.2.37 on no built image is committed (gateway issue #8).
+- The **FOTA override** (web UI, `fotaen`/`fotaul`) is a separate community mechanism. When enabled it replaces the `firmware_url` from the TTN server with one fixed URL (`app_ota.c`, state `APP_OTA_CONNECTING`). It deliberately does not use channels: one flat URL that serves one `checksums` and one `firmware.hex`.
+- With the override enabled the update channel set at TTN has no effect on the gateway.
+
+### 15.5 `auto_update` is not honoured
+
+The firmware reads `auto_update` from the configuration response and stores it (`app_configuration.c`, `appGWActivationData.configuration.auto_update`), but no code uses the value. The gateway runs the firmware check at every boot and after 24 hours regardless of the setting (§1), and installs an image whenever the checksum differs (§6). Switching off automatic updates at TTN therefore does not stop updates. This is the behaviour of the original firmware as well (same code in upstream `develop`). Recorded as gateway issue #9.
+
+The TTN Sandbox console does not offer `auto_update` as a setting (2026-11-21), so an owner cannot switch it. The mechanism in this firmware is therefore left unchanged until the feature is available in the dashboard; issue #9 is kept for administrative purposes.
