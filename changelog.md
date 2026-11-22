@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.5] — 2026-11-22
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.37 replaces 1.2.35 (SHA256 `16fc5d0fdd11b3c9c5bf6ffaefc54f98bf50b656412266613c87f59780e84fc1`)
+
+### Firmware 1.2.37
+- Seeds the pseudo-random generator from the hardware random number generator at boot (gateway issue #6): TCP source ports and sequence numbers are no longer the same after every reboot, which removes the stalled TLS handshakes seen during repeated reboots
+- Version 1.2.36 was a diagnostic build and was not released
+
+---
+
 ## [1.0.4] — 2026-11-20
 
 ### Changed
