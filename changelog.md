@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.6] — 2026-11-22
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.38 replaces 1.2.37 (SHA256 `72620cfc2f0db1b6f1daae2440766328a5073fbd937eb89f542f401445655a8c`)
+
+### Firmware 1.2.38
+- Footer with the firmware version and repository link on every web UI page (gateway issue #7); the UDP forwarder page shows a "Save failed" alert
+- Saving the UDP forwarder settings during start-up no longer breaks the connection to The Things Network (gateway issue #10)
+- The built-in frequency plan always uses the public LoRaWAN sync word (gateway issue #13)
+
+---
+
 ## [1.0.5] — 2026-11-22
 
 ### Changed
