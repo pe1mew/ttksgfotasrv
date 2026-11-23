@@ -44,6 +44,7 @@ From then on, the gateway checks `https://rfsee.net/fotasrv/` for firmware updat
 - **Standards Compliant** - Serves Intel HEX firmware files and SHA256 checksums as expected by gateway hardware
 - **Informational Pages** - Comprehensive setup documentation accessible via browser
 - **Zero Configuration** - Works out-of-the-box on any PHP-capable web server
+- **Download Statistics** - Script that counts update checks, updates and unique gateways from the nginx access log
 
 ## Repository Structure
 
@@ -61,6 +62,10 @@ ttksgfotasrv/
 │   ├── start-fota-server.sh    ← Quick start script
 │   ├── firmware.hex            ← Gateway firmware binary (not part of repository)
 │   ├── checksums               ← SHA256 verification file (not part of repository)
+│   └── readme.md               ← Documentation
+│
+├── stats/                      ← Download statistics
+│   ├── fota-stats.py           ← Counts checks, updates and gateways from the nginx access log
 │   └── readme.md               ← Documentation
 │
 ├── TTKSGFOTASpecification.md   ← FOTA protocol specification
@@ -89,6 +94,10 @@ Run a local FOTA server for firmware testing:
 1. See **[simplefota/readme.md](simplefota/readme.md)** for setup instructions
 2. Start the PHP built-in server with your firmware files
 3. Point your development gateway to your local server
+
+### Download Statistics
+
+To see how many gateways use the server and how often the firmware is downloaded, run `stats/fota-stats.py` on the nginx access log. See **[stats/readme.md](stats/readme.md)**.
 
 ### FOTA Protocol Specification
 

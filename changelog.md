@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.1.0] — 2026-11-23
+
+### Added
+- `stats/fota-stats.py` — download statistics from the nginx access log: per day the update checks, the number of different gateways (source addresses), completed and aborted gateway updates and manual firmware downloads; optional state file that keeps the history beyond the log rotation, with hashed addresses only
+- `stats/readme.md` — use, meaning of the numbers, their limits and privacy
+
+---
+
 ## [1.0.6] — 2026-11-22
 
 ### Changed
