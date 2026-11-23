@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.1.1] — 2026-11-23
+
+### Changed
+- `stats/fota-stats.py` — a run that finds no FOTA request now says why: lines read, lines in the nginx combined format, lines naming `checksums` or `firmware.hex`, and the first of those lines
+- `stats/readme.md` — notes for the daily cron job and a section "No FOTA requests found"
+
+---
+
 ## [1.1.0] — 2026-11-23
 
 ### Added

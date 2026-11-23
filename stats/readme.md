@@ -71,8 +71,27 @@ script can read the same logs again at every run.
 15 0 * * * root /opt/ttksgfotasrv/stats/fota-stats.py --state /var/lib/fota-stats/state.json /var/log/nginx/access.log* > /var/lib/fota-stats/report.txt
 ```
 
-Create `/var/lib/fota-stats/` first. Do not put the state file or the report
-inside the web root.
+- Run the script by hand first and check that the table shows requests. A cron
+  job that reads the wrong log file runs without an error and stores nothing.
+- Once a day is enough. The job must run more often than the logs are kept; a
+  missed day is added at the next run while its log is still on the server.
+- Adjust the path of the script and of the log files to your server. `root` can
+  be any user that may read the nginx logs.
+- Create `/var/lib/fota-stats/` first. Do not put the state file or the report
+  inside the web root.
+- `report.txt` holds the table of the last run.
+
+## No FOTA requests found
+
+When a run finds no request, the script says on standard error how many lines
+it read, how many are in the `combined` format and how many name `checksums` or
+`firmware.hex`, and shows the first of those lines. The causes:
+
+| The script reports | Cause | What to do |
+|---|---|---|
+| No line names one of the files | The site writes to another log file | `grep -rn access_log /etc/nginx/` shows the file; run the script on that file and its rotated copies |
+| Lines name the files, but are not in the combined format | The site uses its own `log_format` | The script reads the default `combined` format only; `grep -rn log_format /etc/nginx/` shows the format in use |
+| Lines name the files and are readable | The requests have another path, or the address is excluded | Compare the path in the line shown with `--prefix`; check `--exclude-ip` |
 
 ## How a request is counted
 

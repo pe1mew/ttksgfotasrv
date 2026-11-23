@@ -43,17 +43,25 @@ def open_log(name):
     return open(name, "r", errors="replace")
 
 
-def read_logs(names, prefix, exclude):
+def read_logs(names, prefix, exclude, seen):
     """Yield (day, ip, resource, is_gateway, bytes_sent) for every successful
-    GET of one of the two FOTA files."""
+    GET of one of the two FOTA files. `seen` counts what was read, for the
+    explanation when nothing is found."""
     targets = {prefix + "/checksums": "checksums",
                prefix + "/firmware.hex": "firmware"}
     for name in names:
         with open_log(name) as log:
             for line in log:
+                seen["lines"] += 1
+                named = "/checksums" in line or "/firmware.hex" in line
+                if named:
+                    seen["mention"] += 1
+                    seen["sample"] = seen["sample"] or line.strip()
                 m = LINE.match(line)
                 if not m:
                     continue
+                seen["parsed"] += 1
+                seen["readable"] += named
                 ip, dd, mon, yyyy, method, uri, status, size, agent = m.groups()
                 if method != "GET" or status != "200" or ip in exclude:
                     continue
@@ -67,10 +75,11 @@ def read_logs(names, prefix, exclude):
                        0 if size == "-" else int(size))
 
 
-def collect(names, prefix, exclude, salt, image_size):
+def collect(names, prefix, exclude, salt, image_size, seen):
     """Return ({day: record}, largest firmware response seen)."""
     key = salt.encode()
-    hits = list(read_logs(names, prefix, exclude))
+    hits = list(read_logs(names, prefix, exclude, seen))
+    seen["hits"] = len(hits)
     largest = max([image_size] + [h[4] for h in hits if h[2] == "firmware"])
     complete_from = largest * COMPLETE_RATIO
 
@@ -188,6 +197,30 @@ def report(days, show, as_csv, out):
           file=out)
 
 
+def explain(seen, files, prefix):
+    """Say on standard error why this run found no FOTA request."""
+    err = sys.stderr
+    print("No FOTA request in this run: %d lines read from %d file(s), %d in the "
+          "nginx combined format,\n%d naming checksums or firmware.hex."
+          % (seen["lines"], files, seen["parsed"], seen["mention"]), file=err)
+    if not seen["lines"]:
+        print("The log files are empty.", file=err)
+    elif not seen["mention"]:
+        print("These logs hold no FOTA traffic. The site may write to another log "
+              "file:\n  grep -rn access_log /etc/nginx/", file=err)
+    else:
+        if not seen["readable"]:
+            print("Those lines are not in the combined format; the script cannot "
+                  "read them as they are.", file=err)
+        else:
+            print("Requests were found, but none is a GET with status 200 for "
+                  "%s/checksums or\n%s/firmware.hex. Check --prefix and "
+                  "--exclude-ip." % (prefix, prefix), file=err)
+        print("First line that names one of the files (it holds an IP address):"
+              "\n  %s" % seen["sample"], file=err)
+    print(file=err)
+
+
 def main():
     p = argparse.ArgumentParser(
         description="Download statistics for the FOTA server from nginx access logs.")
@@ -216,8 +249,11 @@ def main():
     prefix = "/" + args.prefix.strip("/") if args.prefix.strip("/") else ""
 
     state = load_state(args.state)
+    seen = {"lines": 0, "parsed": 0, "mention": 0, "readable": 0, "hits": 0, "sample": ""}
     days, largest = collect(args.logs, prefix, set(args.exclude_ip), state["salt"],
-                            max(args.image_size, state.get("image_size", 0)))
+                            max(args.image_size, state.get("image_size", 0)), seen)
+    if not seen["hits"]:
+        explain(seen, len(args.logs), prefix)
     state["image_size"] = largest
     merge(state, days, args.keep_hashes)
     if args.state:
