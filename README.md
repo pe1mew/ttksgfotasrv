@@ -6,7 +6,7 @@ A PHP-based Firmware Over-The-Air (FOTA) server for The Things Network Kickstart
 
 A public instance of this FOTA server is running at **<https://rfsee.net/fotasrv/>**. Gateway owners can use it directly; no own deployment is needed.
 
-The instance serves the modified gateway firmware from the [gateway repository (`upd-only` branch)](https://github.com/pe1mew/gateway/tree/upd-only):
+The instance serves the modified gateway firmware from the [gateway repository](https://github.com/pe1mew/gateway/):
 
 | Endpoint | Content |
 |---|---|
@@ -108,7 +108,7 @@ For technical details about the FOTA protocol implementation, see **[TTKSGFOTASp
 - **PHP 7.4+** (PHP 8.0+ recommended)
 - **Web server** with PHP support (Apache, nginx, or PHP built-in server)
 - **HTTPS certificate** (production deployments only)
-- **Gateway firmware files** from the [gateway repository](https://github.com/pe1mew/gateway/tree/upd-only)
+- **Gateway firmware files** from the [gateway repository](https://github.com/pe1mew/gateway/)
 
 
 ## License

@@ -108,7 +108,7 @@ if (substr($uri, -10) === '/checksums' || $uri === '/checksums' || $basename ===
       <p>For additional details and documentation:</p>
       <ul>
         <li>This FOTA Server: <a href="https://github.com/pe1mew/ttksgfotasrv" target="_blank">https://github.com/pe1mew/ttksgfotasrv</a></li>
-        <li>Gateway Firmware served here: <a href="https://github.com/pe1mew/gateway/tree/upd-only" target="_blank">https://github.com/pe1mew/gateway/tree/upd-only</a></li>
+        <li>Gateway Firmware served here: <a href="https://github.com/pe1mew/gateway/" target="_blank">https://github.com/pe1mew/gateway/</a></li>
       </ul>
       
       <h2>License</h2>

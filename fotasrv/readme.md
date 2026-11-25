@@ -116,5 +116,5 @@ The gateway will then check your server for firmware updates.
 ## More Information
 
 - FOTA Server Repository: https://github.com/pe1mew/ttksgfotasrv
-- Gateway Firmware: https://github.com/pe1mew/gateway/tree/upd-only
+- Gateway Firmware: https://github.com/pe1mew/gateway/
 - For development/testing, see `../simplefota/` directory
