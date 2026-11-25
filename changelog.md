@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.1.3] — 2026-11-25
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.40 replaces 1.2.39 (SHA256 `ecdda016d71ecbdd43095c7696d764f21fcca27e57d5e63285d5bc931d1ec638`)
+
+### Firmware 1.2.40
+- Info page says "TTN connection", "TTN packets up" and "TTN packets down" instead of "Broker …"; wording only, the `status.cgi` fields keep their names (gateway issue #16)
+
+---
+
 ## [1.1.2] — 2026-11-25
 
 ### Changed
