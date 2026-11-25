@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.1.2] — 2026-11-25
+
+### Changed
+- `fotasrv/firmware.hex` and `fotasrv/checksums` — gateway firmware release 1.2.39 replaces 1.2.38 (SHA256 `d8a5707b34a95e6af1a30ccdeea83b73d9487888356286363e836970a745f574`)
+
+### Firmware 1.2.39
+- Status page: "Broker connection" follows the MQTT connection, the uplink counter counts only delivered uplinks, new UDP packet counters (gateway issue #12)
+- Status page shows which frequency plan is in use: none, downloaded or built-in (gateway issue #14)
+- Uptime on the Info page as `hh:mm:ss`, with a note about the 24-hour restart (gateway issue #15)
+- No reset any more when the MQTT connection is rebuilt after a network re-initialisation: the MQTT read task gets a 4 KB stack instead of 16 KB (gateway issue #17)
+
+---
+
 ## [1.1.1] — 2026-11-23
 
 ### Changed
